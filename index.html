@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Local Blog Platform</title>
+<style>
+/* GENERAL STYLES */
+body { 
+    font-family: 'Arial', sans-serif; 
+    background: #f0f4f8; 
+    margin: 0; 
+    padding: 20px; 
+    color: #333;
+}
+
+h1 { 
+    text-align: center; 
+    color: #222; 
+    margin-bottom: 25px; 
+    font-size: 2rem;
+}
+
+/* BUTTONS */
+button, a { 
+    border: none; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    text-decoration: none; 
+    font-weight: 500;
+    padding: 8px 15px;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    background: #4a90e2; 
+    color: #fff;
+}
+
+button:hover, a:hover { 
+    background: #357ab8; 
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15); 
+}
+
+/* TABLE */
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 20px; 
+    background: #fff; 
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td { 
+    padding: 12px; 
+    text-align: center; 
+    color: white;
+    border-bottom: 1px solid #eee;
+}
+
+th { 
+    background: #4a90e2; 
+    color: #fff; 
+    font-weight: 600;
+}
+
+td a { 
+    color: white; 
+    text-decoration: none; 
+}
+td a:hover { text-decoration: underline; }
+
+/* MODALS */
+.modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content { 
+    background: #fff; 
+    margin: 60px auto; 
+    padding: 25px; 
+    border-radius: 16px; 
+    width: 450px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+}
+
+.modal-content input, 
+.modal-content textarea, 
+.modal-content select { 
+    width: 100%; 
+    padding: 10px; 
+    margin: 5px 0 15px; 
+    border-radius: 10px; 
+    border: 1px solid #ddd; 
+    font-size: 0.95rem;
+}
+
+textarea { resize: none; }
+
+/* TAGS */
+.tag { 
+    display: inline-block; 
+    background: #4a90e2; 
+    color: #fff; 
+    padding: 4px 10px; 
+    margin: 2px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    font-size: 0.85rem;
+}
+.tag:hover { background: #357ab8; }
+
+/* FILTERS */
+.filter-select { 
+    padding: 6px; 
+    margin: 0 8px 12px 0; 
+    border-radius: 10px; 
+    border:1px solid #ddd; 
+}
+
+/* INPUT SEARCH */
+#search { 
+    padding: 6px; 
+    width: 220px; 
+    border-radius: 10px; 
+    border: 1px solid #ddd;
+}
+
+/* SMALL MODAL BUTTONS */
+.modal-content button { margin-top: 5px; margin-right: 5px; }
+</style>
+</head>
+<body>
+
+<h1>Local Blog Platform</h1>
+
+<button class="addBtn" onclick="openPostModal()">Add Post</button>
+
+<!-- Filters -->
+<select id="statusFilter" class="filter-select">
+<option value="All">All Status</option>
+<option value="Draft">Draft</option>
+<option value="Published">Published</option>
+</select>
+
+<input type="text" id="search" placeholder="Search posts...">
+
+<!-- Posts Table -->
+<table>
+<thead>
+<tr><th>Title</th><th>Author</th><th>Category</th><th>Status</th><th>Tags</th><th>Actions</th></tr>
+</thead>
+<tbody id="postTable"></tbody>
+</table>
+
+<!-- Modals (same as before) -->
+<div id="postModal" class="modal">
+<div class="modal-content">
+<h3 id="modalTitle">Add Post</h3>
+<input type="hidden" id="postId">
+<input type="text" id="title" placeholder="Title">
+<input type="text" id="category" placeholder="Category">
+<input type="text" id="tags" placeholder="Tags (comma separated)">
+<textarea id="content" placeholder="Content" rows="5"></textarea>
+<select id="status">
+<option value="Draft">Draft</option>
+<option value="Published">Published</option>
+</select>
+<br>
+<button id="savePost" class="confirmBtn">Save</button>
+<button onclick="closePostModal()" class="cancelBtn">Cancel</button>
+</div>
+</div>
+
+<div id="deleteModal" class="modal">
+<div class="modal-content">
+<p>Are you sure you want to delete this post?</p>
+<button id="confirmDelete" class="confirmBtn">Yes</button>
+<button onclick="closeDeleteModal()" class="cancelBtn">No</button>
+</div>
+</div>
+
+<div id="detailModal" class="modal">
+<div class="modal-content">
+<h3 id="detailTitle"></h3>
+<p><b>Author:</b> <span id="detailAuthor"></span></p>
+<p><b>Category:</b> <span id="detailCategory"></span></p>
+<p id="detailContent"></p>
+<h4>Comments</h4>
+<textarea id="commentContent" placeholder="Add a comment" rows="3"></textarea><br>
+<button id="addCommentBtn" class="confirmBtn">Add Comment</button>
+<ul id="commentsList" style="list-style:none; padding:0;"></ul>
+<button onclick="closeDetailModal()" class="cancelBtn">Close</button>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
